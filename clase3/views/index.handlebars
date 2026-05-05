@@ -1,0 +1,31 @@
+<div class="container my-5">
+    <div class="row my-5">
+        <div class="col-md-4 offset-md-4">
+            <a href="/">
+                <img src="images/coderhouse.svg" alt="Coderhouse" class="img-fluid" />
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h1 class="fw-bold">{{title}}</h1>
+            <form>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" />
+                </div>
+                <div class="mb-3">
+                    <label for="contrasena" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="contrasena">
+                </div>
+                <button type="button" class="btn btn-primary" id="btnEnviar">Enviar</button>
+                <p class="my-3">No tenes Usuario? Registrate <a href="/registrar"><b>aquí</b></a></p>
+            </form>
+        </div>
+    </div>
+    <div class="row my-5">
+        <div id="resultado" class="col-md-4 offset-md-4">
+    </div>
+</div>
+
+<script src="./js/index.js"></script>
