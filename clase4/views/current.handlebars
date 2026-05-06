@@ -1,0 +1,31 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h1 class="fw-bold">Pantalla Principal</h1>
+            <form method="post" action="/logout">
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="first_name" value="{{user.first_name}}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="last_name" value="{{user.last_name}}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="text" class="form-control" id="email" value="{{user.email}}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Rol</label>
+                    <input type="text" class="form-control" id="role" value="{{user.role}}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" value="{{user.password}}" />
+                </div>
+                
+                <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+            </form>
+        </div>
+    </div>
+</div>

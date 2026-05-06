@@ -1,0 +1,23 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <h1 class="fw-bold">Iniciar Sesión</h1>
+            <form method="post" action="/api/users/login">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" required />
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" required />
+                </div>
+                <button type="submit" class="btn btn-primary" id="btnEnviar">Enviar</button>
+            </form>
+        </div>
+        <div class="col-md-4 offset-md-4">
+            <div id="resultado"></div>
+        </div>
+    </div>
+</div>
+
+{{!-- <script src="js/login.js"></script> --}}
