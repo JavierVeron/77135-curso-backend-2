@@ -1,40 +1,50 @@
-import { signedCookie } from "cookie-parser";
 import Router from "express"
-import { requiereAuth } from "../middlewares/auth.js"
 import jwt from "jsonwebtoken"
+import { signedCookie } from "cookie-parser"
+import { requireAuth, redirectIfAuth } from "../middlewares/auth.js"
 
 const viewsRouter = Router();
 const SECRET_KEY = "S3CR3T0";
 
-viewsRouter.get("/login", (req, res) => {    
-    res.render("login", {title:"Iniciar Sesión"})
+viewsRouter.get("/login", redirectIfAuth, (req, res) => {
+    res.render("login", { title: "Iniciar Sesión" });
 });
 
-viewsRouter.post("/login", async (req, res) => {
-    //const {email, password} = req.params;
-    const email = "mq@gmail.com";
-    const password = 112233;  
-    const result = await userModel.findOne({$and:[{email:email}, {password:password}]});
-    const token = jwt.sign(result, SECRET_KEY, {expiresIn:"1h"});
-    res.cookie("currentUser", token, {signed:true, maxAge:3600000});
+viewsRouter.post("/login", redirectIfAuth, async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-    if (result) {
-        console.log(res.cookie);
-        
-        //req.signedCookies("currentUser", result, {signed:true, maxAge:3600000});
-        res.send({status:"ok"});
+        const user = await userModel.findOne({ email: email?.toLowerCase() });
+        if (!user) {
+            return res.send(`<script>alert("Login failed!"); window.location.href="/users/login";</script>`);
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return res.send(`<script>alert("Login failed!"); window.location.href="/users/login";</script>`);
+        }
+
+        const token = jwt.sign(
+            {id:user._id, first_name:user.first_name, last_name:user.last_name, email:user.email, age:user.age},
+            JWT_SECRET,
+            {expiresIn:"1h"}
+        );
+
+        res.cookie("currentUser", token, { signed: true, httpOnly: true, maxAge: 3600000 });
+        res.redirect("/users/current");
+    } catch {
+        res.send(`<script>alert("Login failed!"); window.location.href="/users/login";</script>`);
     }
-
-    res.status(401).send({status:"error", message:"Usuario y/o Contraseña incorrecta!"});
 });
 
-viewsRouter.get("/current", requiereAuth, (req, res) => {
-    res.render("current", {title:"Pantalla Principal"})
+viewsRouter.get("/current", requireAuth, (req, res) => {
+    const { first_name, last_name, email, age } = req.user;
+    res.render("current", { title: "Mi Perfil", first_name, last_name, email, age });
 });
 
-viewsRouter.post("/logout", (req, res) => {
-    res.clearCookie("currentUser");
-    res.redirect("/login");
-})
+viewsRouter.get("/logout", (req, res) => {
+    res.clearCookie("currentUser", { signed: true, httpOnly: true });
+    res.redirect("/users/login");
+});
 
 export default viewsRouter
