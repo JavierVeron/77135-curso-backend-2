@@ -1,0 +1,20 @@
+const Login = async () => {    
+    const email = document.getElementById("email");
+    const contrasena = document.getElementById("contrasena");
+    const usuario = {email:email.value, password:contrasena.value};
+
+    const response = await fetch("http://localhost:8080/login", {
+        method:"POST",
+        headers:{'Content-type': 'application/json; charset=UTF-8'},
+        body:JSON.stringify(usuario)
+    });
+    const data = await response.json();
+
+    if (data.status == "ok") {        
+        localStorage.setItem("authToken", data.token);
+    } else {
+        document.getElementById("resultado").innerHTML = `<p class="text-white bg-danger p-1">${data.message}</p>`;
+    }
+}
+
+document.getElementById("btnEnviar").addEventListener("click", Login);
